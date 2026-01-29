@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Kamera buat gambar kalian" />
+  <title>ALAT BUAT DKV</title>
+  <style>
+    /* Reset & Global */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      color: #333;
+      line-height: 1.7;
+      background: #f8f8f8;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Button */
+    .btn-primary {
+      display: inline-block;
+      background: #000;
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 1px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: 0.4s;
+      border: 2px solid transparent;
+    }
+
+    .btn-primary:hover {
+      background: transparent;
+      color: #000;
+      border-color: #000;
+      transform: scale(1.05);
+    }
+
+    /* Header & Hero */
+    .hero {
+      position: relative;
+      height: 100vh;
+      background: url('https://source.unsplash.com/random/1600x900/?streetwear,urban') no-repeat center center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 5rem;
+      margin-bottom: 15px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+    }
+
+    .hero-content {
+      z-index: 2;
+      max-width: 800px;
+      padding: 20px;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #000;
+      letter-spacing: 1px;
+    }
+
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-menu li a {
+      color: #333;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      transition: 0.3s;
+    }
+
+    .nav-menu li a:hover {
+      color: #000;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .hamburger-span {
+      width: 25px;
+      height: 3px;
+      background: #000;
+      margin: 3px 0;
+      transition: 0.3s;
+    }
+
+    /* Produk Section */
+    .produk-section {
+      padding: 100px 0;
+      background: #fff;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 60px;
+      color: #000;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .produk-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .produk-card {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transition: transform 0.4s, box-shadow 0.4s;
+      background: #fff;
+    }
+
+    .produk-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .produk-card img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .produk-info {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .produk-info h3 {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .produk-info p {
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      font-weight: bold;
+      color: #000;
+      font-size: 1.1rem;
+    }
+
+    /* Tentang Section */
+    .tentang-section {
+      padding: 100px 0;
+      background: #f0f0f0;
+      text-align: center;
+    }
+
+    .tentang-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #000;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .about-content {
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      color: #444;
+    }
+
+    /* Kontak Section */
+    .kontak-section {
+      padding: 100px 0;
+      background: #fff;
+      text-align: center;
+    }
+
+    .kontak-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #000;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .kontak-info {
+      max-width: 500px;
+      margin: 0 auto 40px;
+      font-size: 1.1rem;
+      color: #555;
+      line-height: 2;
+    }
+
+    .kontak-info a {
+      color: #000;
+      font-weight: 600;
+    }
+
+    .kontak-info a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    .footer {
+      background: #000;
+      color: #fff;
+      text-align: center;
+      padding: 30px 0;
+      font-size: 0.9rem;
+    }
+
+    .socials {
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+
+    .socials a {
+      color: #ddd;
+    }
+
+    .socials a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 3.5rem;
+      }
+      .hero p {
+        font-size: 1.2rem;
+      }
+      .nav-menu {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: white;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: 0.4s;
+      }
+      .nav-menu.active {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+      .hamburger {
+        display: flex;
+      }
+      .section-title, .tentang-section h2, .kontak-section h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header & Hero -->
+  <header id="home" class="hero">
+    <div class="hero-content">
+      <h1>DKV</h1>
+      <p><strong>Resilient, Quality.</strong></p>
+      <a href="#produk" class="btn-primary">ALAT BUAT KAMU</a>
+    </div>
+    <div class="overlay"></div>
+  </header>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="logo">DKV</div>
+      <ul class="nav-menu">
+        <li><a href="#home">Beranda</a></li>
+        <li><a href="#produk">ALAT</a></li>
+        <li><a href="#tentang">Tentang</a></li>
+        <li><a href="#kontak">Kontak</a></li>
+      </ul>
+      <div class="hamburger">
+        <span class="hamburger-span"></span>
+        <span class="hamburger-span"></span>
+        <span class="hamburger-span"></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Produk -->
+  <section id="produk" class="produk-section">
+    <div class="container">
+      <h2 class="section-title">KOLEKSI TERBARU</h2>
+      <div class="produk-grid">
+        <!-- Produk 1 -->
+        <div class="produk-card">
+          <img src="sketsa.jpeg" alt="sketsa" >
+          <a href="https://www.tokopedia.com/artestore/buku-sketsa-joyko-sketchbook-a4-a5?utm_source=google&utm_medium=organic&utm_campaign=pdp">
+            <h3>Buku sketsa</h3>
+            <p>alat vital untuk menuangkan ide secara cepat, mencoret-coret konsep visual, dan merancang sketsa dasar sebelum masuk ke tahap digital.</p>
+            <p class="price">Harga: Rp 18.000</p>
+          </div>
+        </div>
+        <!-- Produk 2 -->
+        <div class="produk-card">
+          <img src="pensil.jpg" alt="Pensil warna">
+          <a href="https://shopee.co.id/Pensil-Warna-Faber-Castell-24-Warna-Classic-Colour-Pencil-Ukuran-Panjang-i.22273872.261201467">
+            <h3>pensil warna</h3>
+            <p>sebagai alat fundamental untuk sketsa, studi warna, ilustrasi manual, dan pewarnaan detail pada tugas-tugas dasar maupun lanjutan.</p>
+            <p class="price">Harga: Rp 47.550</p>
+          </div>
+        </div>
+        <!-- Produk 3 -->
+        <div class="produk-card">
+          <img src="kunci busi.jpg" alt="kunci busi">
+          <a href="https://shopee.co.id/NEW-LAUNCH-LAPTOP-ZYREX-D-TECH-PRO-V1-RYZEN-5-6600H-16GB-512GB-W11-14.0FHD-IPS-BLIT-LAN-i.27510377.42807118882?extraParams=%7B%22display_model_id%22%3A276774744800%7D&gad_source=1&gad_campaignid=23232658207&gbraid=0AAAABBQUcL6hMQEOfqNKYj9gy_lwVaIx2&gclid=Cj0KCQiAp-zLBhDkARIsABcYc6tRIwe_YshUBby_NoAMPTphLA0gP9WofVJ7Ta20cE4OjxuEt79X3ekaAj1BEALw_wcB">
+            <h3>laptop</h3>
+            <p>mengeksekusi ide visual menjadi karya digital yang profesional</p>
+            <p class="price">Harga: Rp. XXX</p>
+          </div>
+        </div>
+        <!-- Produk 4 -->
+        <div class="produk-card">
+          <img src="kunci inggris.jpg" alt="kunci inggris">
+          <a href="https://shopee.co.id/Canon-EOS-Rebel-T6-Kit-18-55mm-Is-i.71428170.2595327258"<h3>Kamera</h3>
+            <p>mengambil objek gambar secara jelas.</p>
+            <p class="price">Harga: Rp. XXX</p>
+          </div>
+        </div>
+        <!-- Produk 5 -->
+        <div class="produk-card">
+          <img src="kunci ring.jpg" alt="kunci ring">
+          <a href="https://shopee.co.id/Paket-LED-Studio-Light-Lighting-Mini-2-Lampu-LM2A-Softbox-Continuous-Pro-One-Foto-Video-i.42596420.12897566388">
+            <h3>Lighting</h3>
+            <p>menciptakan visual yang indah.</p>
+            <p class="price">Harga: Rp. XXX</p>
+          </div>
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tentang -->
+  <section id="tentang" class="tentang-section">
+    <div class="container">
+      <div class="about-content">
+        <h2>TENTANG DESAIN KOMUNIKASI VISUAL</h2>
+        <p><strong>PENGERTIAN</strong>
+Desain Komunikasi Visual adalah bidang ilmu yang mempelajari cara menyampaikan pesan melalui elemen visual seperti gambar,wana,tipografi dan layout </p>
+        <p>Siswa akan belajar dasar teori desain memperlajari prinsip dasar desain seperti komposisi,warna,tipografi dan dll,siswa juga akan belajar desain grafis untuk membuat poster,brosur,dan logo</p>
+        <p>Menyiapkan peserta didik sebagai tenaga kerja tingkat menengah yang terampil, kreatif dan jujur untuk mengisi kebutuhan dunia industri </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kontak -->
+  <section id="kontak" class="kontak-section">
+    <div class="container">
+      <h2>HUBUNGI KAMI</h2>
+      <div class="kontak-info">
+        <p><strong>Email:</strong> <a href="mailto:ic.smkdbs@gmail.com"></a>ict.smkdbs@gmail.com</p>
+        <p><strong>phone</strong> <a href="https://telpon.me/0317420948">0317420948</a></p>
+        <p><strong>Alamat:</strong> Jl. Sikatan Lebar No 47, Blok F</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; di buat dengan Arya Ridho dan Juan</p>
+      <div class="socials">
+        <a href="https://www.instagram.com/smkdbsofficial/">Instagram</a> |
+        <a href="https://www.tiktok.com/@smkdharmabahariofficial">TikTok</a> |
+        <a href="https://smkdharmabahari.sch.id/informasi/berita/19524d8fec614cf4ab6c4d8df6ddf31e">Website</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          window.scrollTo({
+            top: target.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Hamburger Menu
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+
+    hamburger.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+    });
+  </script>
+</body
